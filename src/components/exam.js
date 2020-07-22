@@ -220,14 +220,14 @@ export const Exam = () => {
 
 			// console.log(data[currentPage].color);
 		}
-	}, [currentPage]);
+	}, [currentPage, data]);
 
 	const setColor = () => {
 		if (data[currentPage].mark) {
 			data[currentPage].color = 'marked';
 		} else if (data[currentPage].choice === null && data[currentPage].visited) {
 			data[currentPage].color = 'unanswered';
-		} else {
+		} else if (data[currentPage].choice !== null) {
 			data[currentPage].color = 'answered';
 		}
 	};
