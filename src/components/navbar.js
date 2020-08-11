@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
 	AppBar,
@@ -6,7 +6,13 @@ import {
 	Typography,
 	Button,
 	IconButton,
+	DialogActions,
+	DialogTitle,
+	Dialog,
 } from '@material-ui/core';
+import { ExitToApp } from '@material-ui/icons';
+import * as actions from '../store/actions/user';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -20,18 +26,66 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export const Navbar = () => {
+const Navbar = () => {
 	const classes = useStyles();
+	const user = JSON.parse(localStorage.getItem('user'));
+
+	const [logoutDialog, setLogoutDialog] = useState(false);
+	const dispatch = useDispatch();
+	const logout = () => dispatch(actions.logout());
+
+	const LogoutDialog = () => {
+		return (
+			<Dialog
+				fullWidth
+				open={logoutDialog}
+				onClose={() => setLogoutDialog(false)}
+			>
+				<DialogTitle>{'Logout this session ?'}</DialogTitle>
+				{/* <DialogContent>
+			  <DialogContentText>
+				
+			  </DialogContentText>
+			</DialogContent> */}
+				<DialogActions>
+					<Button onClick={() => setLogoutDialog(false)} color='primary'>
+						Cancel
+					</Button>
+					<Button
+						onClick={() => {
+							setLogoutDialog(false);
+							logout();
+						}}
+						color='primary'
+						autoFocus
+					>
+						Yes
+					</Button>
+				</DialogActions>
+			</Dialog>
+		);
+	};
 
 	return (
 		<div className={classes.root}>
+			<LogoutDialog />
 			<AppBar position='static'>
 				<Toolbar>
-					<Typography variant='h6' className={classes.title}>
-						Quiz Bee
+					<Typography color='inherit' variant='h6' className={classes.title}>
+						CCC-Quiz
 					</Typography>
+					{/* <Typography color='inherit' variant='h6' className={classes.title}>
+						{user.name}
+					</Typography> */}
+					{user && (
+						<IconButton color='inherit' onClick={() => setLogoutDialog(true)}>
+							<ExitToApp />
+						</IconButton>
+					)}
 				</Toolbar>
 			</AppBar>
 		</div>
 	);
 };
+
+export default Navbar;

@@ -30,7 +30,7 @@ import {
 	DialogContentText,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-// import { message } from 'antd';
+import { message } from 'antd';
 // import * as actions from '../../store/actions/user';
 import {
 	RadioButtonUnchecked,
@@ -44,6 +44,8 @@ import {
 } from '@material-ui/icons';
 import { red, yellow, pink, green, deepOrange } from '@material-ui/core/colors';
 import { baseUrl } from '../helper';
+import moment from 'moment';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -124,14 +126,16 @@ const useStyles = makeStyles((theme) => ({
 // 	answer.push(0);
 // }
 
-export const Exam = () => {
+const Exam = () => {
 	const classes = useStyles();
-
-	const [res, setRes] = useState(0);
+	const history = useHistory();
+	// const start = moment().format('LTS').toString();
+	const [start, setStart] = useState('');
 	const [data, setData] = useState([]);
 	const [count, setCount] = useState(0);
 	const [answer, setAnswer] = useState([]);
 	const [arr, setArr] = useState([]);
+	const { name, email } = JSON.parse(localStorage.getItem('user'));
 
 	const len = data.length;
 	const [currentPage, setCurrentPage] = useState(0);
@@ -142,8 +146,15 @@ export const Exam = () => {
 	const [restart, setRestart] = useState(false);
 
 	useEffect(() => {
+		setStart(moment().format('LTS').toString());
+
 		setLoader(true);
-		fetch(`${baseUrl}/allques`)
+		fetch(`${baseUrl}/allques`, {
+			headers: {
+				'Content-type': 'application/json',
+				Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+			},
+		})
 			.then((res) => res.json())
 			.then((response) => {
 				// console.log(response.myques);
@@ -177,36 +188,6 @@ export const Exam = () => {
 			});
 	}, [restart]);
 
-	const SubmitDialog = () => {
-		return (
-			<Dialog fullWidth open={dialog} onClose={() => setDialog(false)}>
-				<DialogTitle style={{ textAlign: 'center', fontSize: 100 }}>
-					{'You Scored'}
-				</DialogTitle>
-				<DialogContent>
-					<DialogContentText style={{ textAlign: 'center', fontSize: 50 }}>
-						{res}
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button
-						onClick={() => {
-							setDialog(false);
-							setRestart(!restart);
-							setVal(null);
-							setCurrentPage(0);
-							setSection(1);
-						}}
-						color='primary'
-						autoFocus
-					>
-						Restart
-					</Button>
-				</DialogActions>
-			</Dialog>
-		);
-	};
-
 	useEffect(() => {
 		if (data.length !== 0) {
 			data[currentPage].choice = val;
@@ -237,13 +218,111 @@ export const Exam = () => {
 	};
 
 	const submit = () => {
+		setLoader(true);
 		var result = 0;
 
 		data.map((item) => {
-			item.choice === item.correct && result++;
+			if (item.choice === item.correct) {
+				result += 2;
+			}
+			if (item.choice !== item.correct && item.choice !== null) {
+				result -= 1;
+			}
 		});
-		setRes(result);
-		setDialog(true);
+		const end = moment().format('LTS').toString();
+		fetch(`${baseUrl}/submit`, {
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+			},
+			body: JSON.stringify({
+				name,
+				email,
+				score: result,
+				start,
+				end,
+			}),
+		})
+			.then((res) => res.json())
+			.then((response) => {
+				console.log(response);
+				if (response.message) {
+					// message.success(response.message);
+				} else {
+					// message.error(response.error);
+				}
+
+				setLoader(false);
+				history.push('/submission');
+			})
+			.catch((error) => {
+				console.log(error);
+				message.error('Server is down!');
+				setLoader(false);
+			});
+
+		// setRes(result);
+		// setDialog(true);
+	};
+
+	// const SubmitDialog = () => {
+	// 	return (
+	// 		<Dialog fullWidth open={dialog} onClose={() => setDialog(false)}>
+	// 			<DialogTitle style={{ textAlign: 'center', fontSize: 100 }}>
+	// 				{'Submit Confirmation'}
+	// 			</DialogTitle>
+	// 			<DialogContent>
+	// 				<DialogContentText style={{ textAlign: 'center', fontSize: 50 }}>
+	// 					{res}
+	// 				</DialogContentText>
+	// 			</DialogContent>
+	// 			<DialogActions>
+	// 				<Button
+	// 					onClick={() => {
+	// 						setDialog(false);
+	// 						submit();
+	// 						// setRestart(!restart);
+	// 						// setVal(null);
+	// 						// setCurrentPage(0);
+	// 						// setSection(1);
+	// 					}}
+	// 					color='primary'
+	// 					autoFocus
+	// 				>
+	// 					Submit
+	// 				</Button>
+	// 			</DialogActions>
+	// 		</Dialog>
+	// 	);
+	// };
+
+	const SubmitDialog = () => {
+		return (
+			<Dialog fullWidth open={dialog} onClose={() => setDialog(false)}>
+				<DialogTitle>{'Submit Quiz?'}</DialogTitle>
+				{/* <DialogContent>
+			  <DialogContentText>
+				
+			  </DialogContentText>
+			</DialogContent> */}
+				<DialogActions>
+					<Button onClick={() => setDialog(false)} color='primary'>
+						Cancel
+					</Button>
+					<Button
+						onClick={() => {
+							setDialog(false);
+							submit();
+						}}
+						color='primary'
+						autoFocus
+					>
+						Submit
+					</Button>
+				</DialogActions>
+			</Dialog>
+		);
 	};
 
 	return (
@@ -430,7 +509,7 @@ export const Exam = () => {
 												onClick={() => reset()}
 												style={{ width: '100%' }}
 											>
-												Reset
+												Reset Choice
 											</Button>
 										</Grid>
 										<Grid item xs={6} sm={3}>
@@ -473,7 +552,7 @@ export const Exam = () => {
 												variant='contained'
 												size='large'
 												color='primary'
-												onClick={() => submit()}
+												onClick={() => setDialog(true)}
 												style={{ width: '100%' }}
 											>
 												Submit Test
@@ -489,3 +568,5 @@ export const Exam = () => {
 		</div>
 	);
 };
+
+export default Exam;
