@@ -369,7 +369,7 @@ const Exam = () => {
 									<Divider />
 									<List>
 										<ListItem button>
-											<ListItemIcon>
+											<ListItemIcon onClick={() => setVal(1)}>
 												{val === 1 ? (
 													<RadioButtonChecked fontSize='large' />
 												) : (
@@ -382,7 +382,7 @@ const Exam = () => {
 											/>
 										</ListItem>
 										<ListItem button>
-											<ListItemIcon>
+											<ListItemIcon onClick={() => setVal(2)}>
 												{val === 2 ? (
 													<RadioButtonChecked fontSize='large' />
 												) : (
@@ -395,7 +395,7 @@ const Exam = () => {
 											/>
 										</ListItem>
 										<ListItem button>
-											<ListItemIcon>
+											<ListItemIcon onClick={() => setVal(3)}>
 												{val === 3 ? (
 													<RadioButtonChecked fontSize='large' />
 												) : (
@@ -408,7 +408,7 @@ const Exam = () => {
 											/>
 										</ListItem>
 										<ListItem button>
-											<ListItemIcon>
+											<ListItemIcon onClick={() => setVal(4)}>
 												{val === 4 ? (
 													<RadioButtonChecked fontSize='large' />
 												) : (
