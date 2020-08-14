@@ -32,6 +32,7 @@ const Home = () => {
 									}
 								/>
 							</ListItem>
+							<Divider />
 							<ListItem>
 								<ListItemText
 									primary={
@@ -42,16 +43,19 @@ const Home = () => {
 									}
 								/>
 							</ListItem>
+							<Divider />
 							<ListItem>
 								<ListItemText
 									primary={
 										<h2>
-											3.Submission after 11:00 a.m. will deduct 1 mark for every
-											1 minute delay in submission
+											3.Timing is from 10:00 a.m. to 11:00 a.m. Submission after
+											11:00 a.m. will deduct 1 mark for every 1 minute delay in
+											submission
 										</h2>
 									}
 								/>
 							</ListItem>
+							<Divider />
 							<ListItem>
 								<ListItemText
 									primary={

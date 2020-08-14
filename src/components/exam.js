@@ -349,7 +349,19 @@ const Exam = () => {
 														setCurrentPage((item - 1) * count);
 														setSection(item);
 													}}
-													primary={<h3>Section {item}</h3>}
+													primary={
+														item === 1 ? (
+															<h3>Aptitude</h3>
+														) : item === 2 ? (
+															<h3>HTML</h3>
+														) : item === 3 ? (
+															<h3>CSS</h3>
+														) : item === 4 ? (
+															<h3>Cloud Computing</h3>
+														) : item === 5 ? (
+															<h3>C Programming</h3>
+														) : null
+													}
 												/>
 											</ListItem>
 										))}
@@ -357,7 +369,7 @@ const Exam = () => {
 							</Grid>
 							<Grid item xs={12} sm={6}>
 								<Paper variant='outlined' className={classes.paper}>
-									<h1>
+									<h1 style={{ whiteSpace: 'pre-wrap' }}>
 										{`${
 											(currentPage + 1) % count !== 0
 												? (currentPage + 1) % count
@@ -555,7 +567,7 @@ const Exam = () => {
 												onClick={() => setDialog(true)}
 												style={{ width: '100%' }}
 											>
-												Submit Test
+												Submit Quiz
 											</Button>
 										</Grid>
 									</Grid>

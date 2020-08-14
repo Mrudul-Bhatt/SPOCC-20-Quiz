@@ -72,11 +72,13 @@ const Navbar = () => {
 			<AppBar position='static'>
 				<Toolbar>
 					<Typography color='inherit' variant='h6' className={classes.title}>
-						CCC-Quiz
+						SPOCC'20-Quiz
 					</Typography>
-					{/* <Typography color='inherit' variant='h6' className={classes.title}>
-						{user.name}
-					</Typography> */}
+					{user && (
+						<Typography color='inherit' variant='h6' className={classes.title}>
+							10:00-11:00 a.m.
+						</Typography>
+					)}
 					{user && (
 						<IconButton color='inherit' onClick={() => setLogoutDialog(true)}>
 							<ExitToApp />
