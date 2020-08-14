@@ -27,7 +27,7 @@ const App = () => {
 	let routes = (
 		<Switch>
 			<Route path='/signin' component={Signin} />
-			<Route path='/signup' component={Signup} />
+			{/* <Route path='/signup' component={Signup} /> */}
 		</Switch>
 	);
 

@@ -100,7 +100,7 @@ export default function Signin() {
 						<LockOutlinedIcon />
 					</Avatar>
 					<Typography component='h1' variant='h5'>
-						Sign in
+						Log In
 					</Typography>
 					<div className={classes.form} noValidate>
 						<TextField
@@ -139,15 +139,15 @@ export default function Signin() {
 							onClick={() => signinHandler()}
 							disabled={loading}
 						>
-							Sign In
+							Log In
 						</Button>
-						<Grid container>
+						{/* <Grid container>
 							<Grid item>
 								<Link variant='body2' onClick={() => history.push('/signup')}>
 									{"Don't have an account? Sign Up"}
 								</Link>
 							</Grid>
-						</Grid>
+						</Grid> */}
 					</div>
 				</div>
 				<Box mt={8}>
