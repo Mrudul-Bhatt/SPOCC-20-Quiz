@@ -41,7 +41,7 @@ const Navbar = () => {
 				open={logoutDialog}
 				onClose={() => setLogoutDialog(false)}
 			>
-				<DialogTitle>{'Logout this session ?'}</DialogTitle>
+				<DialogTitle>{'Logout from Quiz ?'}</DialogTitle>
 				{/* <DialogContent>
 			  <DialogContentText>
 				
@@ -74,11 +74,11 @@ const Navbar = () => {
 					<Typography color='inherit' variant='h6' className={classes.title}>
 						SPOCC'20-Quiz
 					</Typography>
-					{user && (
+					{/* {user && (
 						<Typography color='inherit' variant='h6' className={classes.title}>
 							10:00-11:00 a.m.
 						</Typography>
-					)}
+					)} */}
 					{user && (
 						<IconButton color='inherit' onClick={() => setLogoutDialog(true)}>
 							<ExitToApp />
