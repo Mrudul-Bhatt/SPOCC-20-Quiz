@@ -137,18 +137,18 @@ export default function Signin() {
 							color='primary'
 							className={classes.submit}
 							onClick={() => signinHandler()}
-							//disabled={loading}
-							disabled={true}
+							disabled={loading}
+							//disabled={true}
 						>
 							Log In
 						</Button>
-						{/* <Grid container>
+						<Grid container>
 							<Grid item>
 								<Link variant='body2' onClick={() => history.push('/signup')}>
 									{"Don't have an account? Sign Up"}
 								</Link>
 							</Grid>
-						</Grid> */}
+						</Grid>
 					</div>
 				</div>
 				<Box mt={8}>
